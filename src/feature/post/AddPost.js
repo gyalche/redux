@@ -59,7 +59,7 @@ const AddPost = () => {
             onChange={onTitleChange}
             
             /><br></br>
-            <label for="postAuthor">Author</label>
+            <label htmlFor="postAuthor">Author</label>
             <select id="poastAuthor" value={usersId} onChange={onAuthorChanged}>
                 <option value=""></option>
                 {usersOptions}
