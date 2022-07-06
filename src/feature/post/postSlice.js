@@ -7,7 +7,7 @@ const POST_URL='https://jsonplaceholder.typicode.com/posts';
 
 const initialState = {
     posts: [],
-    status:'idle',
+    status:"idle",
     error:null,
 }
 
@@ -21,6 +21,14 @@ const initialState = {
     });
 
 
+    export const addNewPost=createAsyncThunk('posts/addNewPost', async(initialPost)=>{
+        try {
+            const response=await axios.post(POST_URL, initialPost)
+            return response.data;
+        } catch (error) {
+            return error.message;
+        }
+    })
     // {id:"1",
     //  title:"Book",
     //   content:"Arms and the man drama",
@@ -83,14 +91,15 @@ export const postSlice=createSlice({
          if(existingPost) {
              existingPost.reactions[reaction]++;
          }
-     },
+     }
+    },
 
      extraReducers(builder) {
         //builder is an object thatt lets us find additional case reducer that run
         // and respose to the action defined outside of the slice;
         builder
             .addCase(fetchPosts.pending, (state, action)=>{
-                state.staus='loading';
+                state.status='loading';
             })
             .addCase(fetchPosts.fulfilled, (state, action)=>{
                 state.status='succeded'
@@ -100,12 +109,12 @@ export const postSlice=createSlice({
 
                 const loadPosts=action.payload.map(post=>{
                     post.date=sub(new Date(), {minutes:min++}).toISOString();
-                    post.reaction={
+                    post.reactions={
                         thumbsUp:0,
-                        hooray:0,
+                        wow:0,
                         heart:0,
-                        rockey:0,
-                        eyes:0,
+                        rocket:0,
+                        coffe:0,
                     }
                     return post;
                 });
@@ -118,9 +127,22 @@ export const postSlice=createSlice({
                 state.status='failed'
                 state.error=action.error.message
             })
+            .addCase(addNewPost.fulfilled, (state, action)=>{
+                action.payload.userId=Number(action.payload.userId)
+                action.payload.date=new Date().toISOString();
+                action.payload.reactions={
+                        thumbsUp:0,
+                        wow:0,
+                        heart:0,
+                        rocket:0,
+                        coffe:0
+                }
 
-     }
-    }
+                state.posts.push(action.payload)
+            })
+     },
+
+
 })
 export const selectAllPost=(state)=>state.posts.posts;
 export const getPostsStatus=(state)=>state.posts.status;

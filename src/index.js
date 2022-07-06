@@ -6,6 +6,11 @@ import reportWebVitals from './reportWebVitals';
 import { store } from './app/store';
 import {Provider} from "react-redux";
 //provider provides the global state to our app;
+
+//since we want to load the users when the app starts;
+import { fetchUsers } from './feature/users/userSlice';
+
+store.dispatch(fetchUsers());
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

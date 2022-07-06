@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {postAdded} from './postSlice';
+// import {postAdded} from './postSlice';
+import {addNewPost} from './postSlice';
 // import { nanoid } from '@reduxjs/toolkit';
 import {selectAllUsers} from '../users/userSlice'
 import styled from 'styled-components';
@@ -8,10 +9,11 @@ const AddPost = () => {
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
     const [usersId, setUsersId] = useState('')
-
+    const [addRequestStatus, setAddRequestStatus] = useState('idle')
     const users=useSelector(selectAllUsers)
 
     const dispatch=useDispatch();
+
     const onTitleChange=(e) => {
         setTitle(e.target.value);
 
@@ -24,24 +26,39 @@ const AddPost = () => {
         setUsersId(e.target.value)
     }
 
+    const canSave=[title, content, usersId].every(Boolean) && addRequestStatus ==='idle';
     const onPostSave=(e) => {
         e.preventDefault();
-        if(title && content && usersId) {
-            dispatch(
-                // postAdded({
-                //     id:nanoid,
-                //     title,
-                //     content,
-                // })
-                postAdded(title, content, usersId)
-            )
-            setTitle('')
-            setContent('')
-            setUsersId('')
+
+        if(canSave) {
+            try {
+                setAddRequestStatus('pending');
+                dispatch(addNewPost({title, body:content, usersId})).unwrap();
+
+                setTitle('')
+                setContent('')
+                setUsersId('')
+
+            } catch (error) {
+                
+            }
         }
+        // if(title && content && usersId) {
+        //     dispatch(
+        //         // postAdded({
+        //         //     id:nanoid,
+        //         //     title,
+        //         //     content,
+        //         // })
+        //         postAdded(title, content, usersId)
+        //     )
+        //     setTitle('')
+        //     setContent('')
+        //     setUsersId('')
+        // }
     }
 
-    const canSave=Boolean(title) && Boolean(content) && Boolean(usersId);
+    // const canSave=Boolean(title) && Boolean(content) && Boolean(usersId);
     const usersOptions=users.map(user=>(
         <option key={user.id} value={user.id}>
             {user.name}

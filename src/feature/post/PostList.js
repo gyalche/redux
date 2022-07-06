@@ -25,7 +25,7 @@ const PostList = () => {
       content=<p>"Loading ..."</p>
     }else if(postStatus==="succeded"){
       const orderPosts=posting.slice(0).sort((a,b)=>b.date.localeCompare(a.date))
-       content=orderPosts?.map(post=><PostExcerpt key={post.key} post={post} />)
+       content=orderPosts?.map((post)=><PostExcerpt key={post.id} post={post} />)
     }else if(postStatus==="failed"){
       content=<p>"failed.."</p>
     }
