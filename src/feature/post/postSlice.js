@@ -29,6 +29,19 @@ const initialState = {
             return error.message;
         }
     })
+
+    //to update;
+
+    export const updatePost=createAsyncThunk('posts/updatePost', async(initialPost) => {
+
+        const {id}=initialPost;
+        try {
+            const response=await axios.put(`${POST_URL}/${id}`, initialPost);
+            return response.data;
+        } catch (error) {
+            return err.message;
+        }
+    })
     // {id:"1",
     //  title:"Book",
     //   content:"Arms and the man drama",
@@ -135,7 +148,7 @@ export const postSlice=createSlice({
                         wow:0,
                         heart:0,
                         rocket:0,
-                        coffe:0
+                        coffe:0,
                 }
 
                 state.posts.push(action.payload)
@@ -148,6 +161,7 @@ export const selectAllPost=(state)=>state.posts.posts;
 export const getPostsStatus=(state)=>state.posts.status;
 export const getPostsError=(state)=>state.posts.error;
 
+export const selectPostById=(state, postId)=>state.posts.posts.find(post=>post.id===postId)
 
 export const {postAdded, reactionAdded}=postSlice.actions;
 export default postSlice.reducer;
