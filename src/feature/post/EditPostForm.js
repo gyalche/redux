@@ -26,9 +26,9 @@ const EditPostForm = () => {
     );
   }
 
-  const onTitleChange = (e) => setTitle(e.target.value);
-  const onContentChange = (e) => setContent(e.target.value);
-  const onAuthorChange = (e) => setUserId(e.target.value);
+  const onTitleChanged = (e) => setTitle(e.target.value);
+  const onContentChanged = (e) => setContent(e.target.value);
+  const onAuthorChanged = (e) => setUserId(e.target.value);
 
   const canSave =
     [title, content, userId].every(Boolean) && requestStatus === 'idle';
@@ -74,7 +74,43 @@ const EditPostForm = () => {
       setRequestStatus('idle');
     }
   };
-  return <div>EditPostForm</div>;
+  return (
+    <section>
+      <h2>Edit Post</h2>
+      <form>
+        <label htmlFor="postTitle">Post Title:</label>
+        <input
+          type="text"
+          id="postTitle"
+          name="postTitle"
+          value={title}
+          onChange={onTitleChanged}
+        />
+        <label htmlFor="postAuthor">Author:</label>
+        <select id="postAuthor" value={userId} onChange={onAuthorChanged}>
+          <option value=""></option>
+          {usersOptions}
+        </select>
+        <label htmlFor="postContent">Content:</label>
+        <textarea
+          id="postContent"
+          name="postContent"
+          value={content}
+          onChange={onContentChanged}
+        />
+        <button type="button" onClick={onSavePostClicked} disabled={!canSave}>
+          Save Post
+        </button>
+        <button
+          className="deleteButton"
+          type="button"
+          onClick={onDeletePostClicked}
+        >
+          Delete Post
+        </button>
+      </form>
+    </section>
+  );
 };
 
 export default EditPostForm;

@@ -180,16 +180,15 @@ export const postSlice = createSlice({
         state.posts = [...post, action.payload];
       })
       .addCase(deletePost.fulfilled, (state, action) => {
-        if(!action.payload?.id){
-          console.log("Delete could notcomplete");
+        if (!action.payload?.id) {
+          console.log('Delete could notcomplete');
           console.log(action.payload);
           return;
         }
-        const {id}=action.payload;
-        const post=state.posts.filter((post) => post.id !== id);
-        state.posts=post;
-      })
-      
+        const { id } = action.payload;
+        const post = state.posts.filter((post) => post.id !== id);
+        state.posts = post;
+      });
   },
 });
 export const selectAllPost = (state) => state.posts.posts;
