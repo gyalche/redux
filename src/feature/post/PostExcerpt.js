@@ -3,7 +3,8 @@ import PostAuthor from './PostAuthor';
 import TimeAgo from './TimeAgo';
 import ReactionButtons from './ReactionButtons';
 import { Link, useParams } from 'react-router-dom';
-const PostExcerpt = ({ post }) => {
+
+let PostExcerpt = ({ post }) => {
   return (
     <article>
       <h2>{post.title}</h2>
@@ -17,5 +18,6 @@ const PostExcerpt = ({ post }) => {
     </article>
   );
 };
+PostExcerpt = React.memo(PostExcerpt); //it allows this component to not render if the props its receive has not changed;
 
 export default PostExcerpt;
